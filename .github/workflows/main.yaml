@@ -32,9 +32,24 @@ jobs:
           coverage xml -o coverage.xml
           coverage report
 
+      - name: Install CodeQL CLI
+        run: |
+          mkdir codeql-bin
+          cd codeql-bin
+          curl -L https://github.com/github/codeql-cli-binaries/releases/latest/download/codeql.zip -o codeql.zip
+          unzip codeql.zip
+          export PATH="$PWD/codeql:$PATH"
+      - name: Install CodeQL CLI
+        run: |
+            mkdir codeql-bin
+            cd codeql-bin
+            curl -L https://github.com/github/codeql-cli-binaries/releases/latest/download/codeql.zip -o codeql.zip
+            unzip codeql.zip
+            export PATH="$PWD/codeql:$PATH"
+
       - name: Convert to SARIF format
         run: |
-          pip install codeql
+          codeql database create --language=python --source-root=. coverage
           codeql database create coverage --language=python --source-root=. --sarif=sarif_report.sarif
   
       - name: Upload SARIF report to GitHub for SCS
