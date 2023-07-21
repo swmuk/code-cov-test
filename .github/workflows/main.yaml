@@ -33,9 +33,12 @@ jobs:
           coverage report
 
       - name: Convert to SARIF format
-        run: coverage json -o custom_report.sarif
-
-      - name: Upload custom SARIF report to GitHub
+        run: |
+          pip install codeql
+          codeql database create coverage --language=python --source-root=. --sarif=sarif_report.sarif
+  
+      - name: Upload SARIF report to GitHub for SCS
         uses: github/codeql-action/upload-sarif@v2
         with:
-          sarif_file: custom_report.sarif
+          sarif_file: sarif_report.sarif
+  
