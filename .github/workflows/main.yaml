@@ -7,6 +7,10 @@ on:
 
 jobs:
   code-coverage:
+    permissions:
+        contents: read
+        security-events: write
+        actions: read
     name: Code Coverage
     runs-on: ubuntu-latest
 
